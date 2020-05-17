@@ -30,21 +30,12 @@ World.add(world, walls);
 
 // Maze generation
 
-const shuffle = (arr) => {
-  // arr = [a, b, c, d]
-  let counter = arr.length; // 4
-
-  while (counter > 0) {
-    const index = Math.floor(Math.random() * counter); // 2 / 0
-
-    counter--; // 3 / 2
-
-    const temp = arr[counter]; 	// temp = d 								/ temp = d
-    arr[counter] = arr[index]; 	// arr[3] = c [a, b, c, c] 	/ arr[2] = a [a, b, a, c]
-    arr[index] = temp; 					// arr[2] = d [a, b, d, c] 	/ arr[0] = d [d, b, a, c]
+const shuffle = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
-
-  return arr;
+  return array;
 };
 
 const grid = Array(cells)
@@ -59,11 +50,12 @@ const horizontals = Array(cells - 1)
   .fill(null)
   .map(() => Array(cells).fill(false));
 
+// Randomly generate a starting point on grid
 const startRow = Math.floor(Math.random() * cells);
 const startColumn = Math.floor(Math.random() * cells);
 
 const stepThroughCell = (row, column) => {
-  // If I have visited the cell at [row, column], the return
+  // If I have visited the cell at [row, column], then return
   if (grid[row][column]) {
     return;
   }
@@ -79,6 +71,7 @@ const stepThroughCell = (row, column) => {
     [row, column - 1], // left
   ]);
 
+  console.log(neighbors);
   // For each neighbor...
 
   // See if that neighbor is out of bounds
@@ -91,3 +84,5 @@ const stepThroughCell = (row, column) => {
 };
 
 stepThroughCell(startRow, startColumn);
+
+console.log(grid);
