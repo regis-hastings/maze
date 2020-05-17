@@ -56,9 +56,7 @@ const startColumn = Math.floor(Math.random() * cells);
 
 const stepThroughCell = (row, column) => {
   // If I have visited the cell at [row, column], then return
-  if (grid[row][column]) {
-    return;
-  }
+  if (grid[row][column]) return;
 
   // Mark this cell as being visited
   grid[row][column] = true;
@@ -96,9 +94,13 @@ const stepThroughCell = (row, column) => {
     } else if (direction === "down") {
       horizontals[row][column] = true;
     }
+    console.log(nextRow, nextColumn);
+    stepThroughCell(nextRow, nextColumn);
   }
 
   // Visit that next cell
 };
 
 stepThroughCell(startRow, startColumn);
+console.log(`Starting cell: [${startRow}, ${startColumn}]`);
+console.log(verticals, horizontals);
