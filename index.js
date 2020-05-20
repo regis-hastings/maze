@@ -1,4 +1,4 @@
-const { Engine, Render, Runner, World, Bodies } = Matter;
+const { Engine, Render, Runner, World, Bodies, Body } = Matter;
 
 const cells = 3;
 const width = 300;
@@ -58,7 +58,7 @@ const startColumn = Math.floor(Math.random() * cells);
 
 const stepThroughCell = (row, column) => {
   // If I have visited the cell at [row, column], then return
-  if (grid[row][column]) return; // not yet
+  if (grid[row][column]) return; 
 
   // Mark this cell as being visited
   grid[row][column] = true;
@@ -75,7 +75,6 @@ const stepThroughCell = (row, column) => {
   for (let neighbor of neighbors) {
     const [nextRow, nextColumn, direction] = neighbor;
     // See if that neighbor is out of bounds
-    console.log(`Possible move: ${nextRow}, ${nextColumn}`);
     if (
       nextRow < 0 ||
       nextRow >= cells ||
@@ -99,13 +98,11 @@ const stepThroughCell = (row, column) => {
       horizontals[row][column] = true;
     }
     // Visit next cell
-    console.log(`Stepping through to: ${nextRow}, ${nextColumn}`);
     stepThroughCell(nextRow, nextColumn);
   }
 };
 
 stepThroughCell(startRow, startColumn);
-console.log(`Starting cell: ${startRow},${startColumn}`);
 
 // Draw Maze Walls
 
@@ -146,7 +143,6 @@ verticals.forEach((row, rowIndex) => {
 });
 
 // Goal
-
 const goal = Bodies.rectangle(
   width - unitLength / 2,
   height - unitLength / 2,
@@ -159,8 +155,24 @@ const goal = Bodies.rectangle(
 World.add(world, goal);
 
 // Ball
-
-const ball = Bodies.circle(unitLength / 2, unitLength / 2, unitLength * 0.25, {
-  isStatic: true,
-});
+const ball = Bodies.circle(unitLength / 2, unitLength / 2, unitLength * 0.25,);
 World.add(world, ball);
+
+document.addEventListener("keydown", (event) => {
+  const { x, y } = ball.velocity;
+
+  if (event.keyCode === 87) {
+    Body.setVelocity(ball, {x, y: y - 5})
+  }
+  if (event.keyCode === 68) {
+    Body.setVelocity(ball, {x: x + 5, y})
+  }
+  if (event.keyCode === 83) {
+    Body.setVelocity(ball, {x, y: y + 5})
+  }
+  if (event.keyCode === 65) {
+    Body.setVelocity(ball, {x: x - 5, y})
+  }
+});
+
+
