@@ -15,6 +15,7 @@ const render = Render.create({
   element: document.body, // where to show the render
   engine: engine, // specify which engine to use
   options: {
+    wireframes: false,
     width,
     height,
   },
@@ -121,7 +122,10 @@ horizontals.forEach((row, rowIndex) => {
       5,
       {
         isStatic: true,
-        label: 'wall'
+        label: 'wall',
+        render: {
+          fillStyle: 'red'
+        }
       }
     );
     World.add(world, wall);
@@ -140,7 +144,10 @@ verticals.forEach((row, rowIndex) => {
       unitLengthY,
       {
         isStatic: true,
-        label: 'wall'
+        label: 'wall',
+        render: {
+          fillStyle: 'red'
+        }
       }
     );
     World.add(world, wall);
@@ -155,7 +162,10 @@ const goal = Bodies.rectangle(
   unitLengthY * 0.5,
   {
     isStatic: true,
-    label: 'goal'
+    label: 'goal',
+    render: {
+      fillStyle: 'green'
+    }
   }
 );
 
@@ -164,7 +174,10 @@ World.add(world, goal);
 // Ball
 const ballRadius = Math.min(unitLengthX, unitLengthY) / 4;
 const ball = Bodies.circle(unitLengthX / 2, unitLengthY / 2, ballRadius, {
-  label: 'ball'
+  label: 'ball',
+  render: {
+    fillStyle: 'lightblue'
+  }
 });
 World.add(world, ball);
 
