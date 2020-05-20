@@ -1,12 +1,13 @@
-const { Engine, Render, Runner, World, Bodies, Body } = Matter;
+const { Engine, Render, Runner, World, Bodies, Body, Events } = Matter;
 
 const cells = 3;
-const width = 300;
-const height = 300;
+const width = 600;
+const height = 600;
 
 const unitLength = width / cells;
 
 const engine = Engine.create();
+engine.world.gravity.y = 0;
 const { world } = engine;
 const render = Render.create({
   element: document.body, // where to show the render
@@ -150,12 +151,15 @@ const goal = Bodies.rectangle(
   unitLength * 0.5,
   {
     isStatic: true,
+    label: 'goal'
   }
 );
 World.add(world, goal);
 
 // Ball
-const ball = Bodies.circle(unitLength / 2, unitLength / 2, unitLength * 0.25,);
+const ball = Bodies.circle(unitLength / 2, unitLength / 2, unitLength * 0.25, {
+  label: 'ball'
+});
 World.add(world, ball);
 
 document.addEventListener("keydown", (event) => {
@@ -175,4 +179,17 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+// Win Condition
 
+Events.on(engine, 'collisionStart', event => {
+  event.pairs.forEach((collision) => {
+    const labels = ['ball', 'goal'];
+
+    if (
+      labels.includes(collision.bodyA.label) && 
+      labels.includes(collision.bodyB.label)
+    ) {
+      console.log('User won!');
+    }
+  });
+});
